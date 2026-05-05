@@ -4,15 +4,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useFavorites } from '@/context/FavoritesContext';
 
+const PLACEHOLDER = '/images/HomeImage.svg';
+
 export default function PropertyCard({ property }) {
   const { toggleFavorite, isFavorite } = useFavorites();
   const favorited = isFavorite(property.id);
+  const cover = property.cover || PLACEHOLDER;
 
   return (
     <Link href={`/logements/${property.id}`} className="group">
       <div className="relative rounded-xl overflow-hidden aspect-[4/3]">
         <Image
-          src={property.cover}
+          src={cover}
           alt={property.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -20,7 +23,7 @@ export default function PropertyCard({ property }) {
         />
         <button
           className="absolute top-3 right-3 z-10"
-          aria-label={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          aria-label="Favoris"
           onClick={(e) => {
             e.preventDefault();
             toggleFavorite(property.id);

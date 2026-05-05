@@ -6,6 +6,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 's3-eu-west-1.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
   },
   async rewrites() {
@@ -17,6 +25,10 @@ const nextConfig = {
       {
         source: '/auth/:path*',
         destination: 'http://localhost:3001/auth/:path*',
+      },
+      {
+        source: '/uploads/:path*',
+        destination: 'http://localhost:3001/uploads/:path*',
       },
     ];
   },

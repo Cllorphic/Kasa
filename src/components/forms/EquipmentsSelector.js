@@ -1,0 +1,31 @@
+'use client';
+
+const EQUIPMENTS = [
+  'Micro-Ondes', 'Clic-clac', 'Douche italienne', 'Four',
+  'Frigo', 'Rangements', 'WIFI', 'Lit', 'Parking', 'Bouilloire',
+  'Sèche Cheveux', 'SDB', 'Machine à laver', 'Toilettes sèches',
+  'Cuisine équipée', 'Cintres', 'Télévision', 'Baie vitrée',
+  'Chambre Séparée', 'Hotte', 'Climatisation', 'Baignoire',
+  'Frigo Américain', 'Vue Parc',
+];
+
+export default function EquipmentsSelector({ selected, onToggle }) {
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <h2 className="text-sm font-bold text-[#333] mb-4">Équipements</h2>
+      <div className="grid grid-cols-2 gap-3">
+        {EQUIPMENTS.map((equip) => (
+          <label key={equip} className="flex items-center gap-2 text-sm text-[#333] cursor-pointer">
+            <input
+              type="checkbox"
+              checked={selected.includes(equip)}
+              onChange={() => onToggle(equip)}
+              className="accent-[#B5533E]"
+            />
+            {equip}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
