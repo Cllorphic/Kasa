@@ -16,6 +16,8 @@ export default function Header() {
     router.push('/');
   };
 
+  const isOwnerOrAdmin = user?.role === 'owner' || user?.role === 'admin';
+
   return (
     <header className="w-full px-4 pt-4">
       <nav className="max-w-3xl mx-auto bg-white rounded-xl shadow-[0_4px_4px_rgba(182,182,182,0.05)] px-6 md:px-12 py-2 flex items-center justify-between relative">
@@ -39,12 +41,14 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-5 shrink-0">
           {!isReady ? null : user ? (
             <>
-              <Link
-                href="/ajouter-propriete"
-                className="text-sm text-[#B5533E] hover:opacity-80 transition whitespace-nowrap"
-              >
-                +Ajouter un logement
-              </Link>
+              {isOwnerOrAdmin && (
+                <Link
+                  href="/ajouter-propriete"
+                  className="text-sm text-[#B5533E] hover:opacity-80 transition whitespace-nowrap"
+                >
+                  +Ajouter un logement
+                </Link>
+              )}
               <Link href="/favoris" aria-label="Favoris">
                 <Image src="/images/Favoris.svg" alt="" width={20} height={20} />
               </Link>
@@ -93,9 +97,11 @@ export default function Header() {
             </Link>
             {!isReady ? null : user ? (
               <>
-                <Link href="/ajouter-propriete" onClick={() => setMenuOpen(false)} className="text-sm text-[#B5533E]">
-                  +Ajouter un logement
-                </Link>
+                {isOwnerOrAdmin && (
+                  <Link href="/ajouter-propriete" onClick={() => setMenuOpen(false)} className="text-sm text-[#B5533E]">
+                    +Ajouter un logement
+                  </Link>
+                )}
                 <div className="flex gap-4">
                   <Link href="/favoris" onClick={() => setMenuOpen(false)} aria-label="Favoris">
                     <Image src="/images/Favoris.svg" alt="" width={20} height={20} />
