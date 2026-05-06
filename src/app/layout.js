@@ -10,6 +10,9 @@ export const metadata = {
     template: '%s | Kasa',
   },
   description: 'Avec Kasa, vivez des séjours uniques dans des hébergements chaleureux, sélectionnés avec soin par nos hôtes.',
+  icons: {
+    icon: '/images/logo-small.svg',
+  },
   openGraph: {
     title: 'Kasa - Location d\'appartements entre particuliers',
     description: 'Vivez des séjours uniques dans des hébergements chaleureux.',
