@@ -8,3 +8,16 @@
 body {
   background-color: var(--color-bg);
 }
+
+::placeholder {
+  color: #999;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-in-out;
+}

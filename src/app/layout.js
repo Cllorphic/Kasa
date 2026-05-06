@@ -5,8 +5,19 @@ import { AuthProvider } from '@/context/AuthContext';
 import { FavoritesProvider } from '@/context/FavoritesContext';
 
 export const metadata = {
-  title: 'Kasa',
-  description: "Location d'appartements entre particuliers",
+  title: {
+    default: 'Kasa - Location d\'appartements entre particuliers',
+    template: '%s | Kasa',
+  },
+  description: 'Avec Kasa, vivez des séjours uniques dans des hébergements chaleureux, sélectionnés avec soin par nos hôtes.',
+  openGraph: {
+    title: 'Kasa - Location d\'appartements entre particuliers',
+    description: 'Vivez des séjours uniques dans des hébergements chaleureux.',
+    url: 'http://localhost:3000',
+    siteName: 'Kasa',
+    locale: 'fr_FR',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }) {
