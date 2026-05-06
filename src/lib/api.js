@@ -11,6 +11,7 @@ const API_URL = typeof window === 'undefined'
  */
 export async function fetchAPI(endpoint, options = {}) {
   const res = await fetch(`${API_URL}${endpoint}`, {
+    cache: 'no-store',
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
