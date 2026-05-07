@@ -6,17 +6,28 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Modal from '@/components/ui/Modal';
 
+/**
+ * Bouton de suppression d'une propriété avec modale de confirmation.
+ * Visible uniquement pour le propriétaire de l'annonce ou les admins.
+ * @param {Object} props
+ * @param {string} props.propertyId - L'id de la propriété à supprimer.
+ * @param {number} props.hostId - L'id de l'hôte propriétaire.
+ */
 export default function DeleteButton({ propertyId, hostId }) {
   const { token, user } = useAuth();
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
 
+  // Ne montre pas le bouton si pas connecté
   if (!token || !user) return null;
+  // Comparaison souple (string vs number) entre l'id utilisateur et l'id hôte
   const isOwner = user.id == hostId;
   const isAdmin = user.role === 'admin';
+  // Ne montre le bouton que pour le propriétaire ou un admin
   if (!isOwner && !isAdmin) return null;
 
+  /** Envoie la requête DELETE à l'API et redirige vers l'accueil */
   const handleDelete = async () => {
     setError('');
     try {

@@ -3,16 +3,32 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+/** Photo de profil par défaut */
 const PLACEHOLDER_PROFILE = 'https://via.placeholder.com/100';
 
+/**
+ * Carte de l'hôte avec photo, nom, note et boutons de contact.
+ * Crée une conversation dans localStorage au clic sur les boutons.
+ * @param {Object} props
+ * @param {Object} props.host - Les infos de l'hôte.
+ * @param {string} props.host.name - Le nom de l'hôte.
+ * @param {string} props.host.picture - L'URL de la photo de profil.
+ * @param {number} props.ratingAvg - La note moyenne de l'hôte.
+ */
 export default function HostCard({ host, ratingAvg }) {
   const router = useRouter();
+  // Fallback sur le placeholder si pas de photo
   const picture = host.picture && host.picture.length > 0 ? host.picture : PLACEHOLDER_PROFILE;
 
+  /**
+   * Crée une conversation avec l'hôte si elle n'existe pas,
+   * puis redirige vers la page de messagerie.
+   */
   const startConversation = () => {
     const saved = localStorage.getItem('conversations');
     const conversations = saved ? JSON.parse(saved) : [];
 
+    // Vérifie si une conversation existe déjà avec cet hôte
     const existing = conversations.find((c) => c.hostId === host.id);
     if (!existing) {
       const newConv = {

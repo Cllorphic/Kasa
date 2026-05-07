@@ -2,14 +2,23 @@
 
 import { useState } from 'react';
 
+/** Liste prédéfinie des catégories disponibles */
 const CATEGORIES = [
   'Parc', 'Night Life', 'Culture', 'Nature', 'Touristique',
   'Vue sur mer', 'Pour les couples', 'Famille', 'Forêt',
 ];
 
+/**
+ * Sélecteur de catégories avec possibilité d'ajouter des tags personnalisés.
+ * Combine des catégories prédéfinies et un champ de saisie libre.
+ * @param {Object} props
+ * @param {string[]} props.selected - Liste des tags sélectionnés.
+ * @param {Function} props.onToggle - Callback pour ajouter/retirer un tag.
+ */
 export default function TagsSelector({ selected, onToggle }) {
   const [customTag, setCustomTag] = useState('');
 
+  /** Ajoute un tag personnalisé s'il n'existe pas déjà */
   const addCustomTag = () => {
     if (customTag.trim() && !selected.includes(customTag.trim())) {
       onToggle(customTag.trim());
@@ -20,6 +29,7 @@ export default function TagsSelector({ selected, onToggle }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-6">
       <h2 className="text-sm font-bold text-[#333] mb-4">Catégories</h2>
+      {/* Tags prédéfinis — style toggle (rempli si sélectionné) */}
       <div className="flex flex-wrap gap-2 mb-6">
         {CATEGORIES.map((tag) => (
           <button
@@ -36,6 +46,7 @@ export default function TagsSelector({ selected, onToggle }) {
         ))}
       </div>
 
+      {/* Champ pour ajouter un tag personnalisé */}
       <label htmlFor="customTag" className="text-sm font-bold text-[#333] mb-2 block">Ajouter une catégorie personnalisée</label>
       <div className="flex items-center gap-3">
         <input

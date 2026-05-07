@@ -1,9 +1,20 @@
 'use client';
 
+/**
+ * Modale de confirmation avec boutons annuler/confirmer.
+ * S'affiche en overlay sur toute la page.
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Si la modale est visible.
+ * @param {Function} props.onClose - Callback pour fermer la modale.
+ * @param {Function} props.onConfirm - Callback pour confirmer l'action.
+ * @param {string} props.title - Le titre de la modale.
+ * @param {string} props.message - Le message de confirmation.
+ */
 export default function Modal({ isOpen, onClose, onConfirm, title, message }) {
   if (!isOpen) return null;
 
   return (
+    // Overlay sombre qui couvre toute la page
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm w-full mx-4 shadow-lg">
         <h2 className="text-lg font-bold text-[#333] mb-2">{title}</h2>

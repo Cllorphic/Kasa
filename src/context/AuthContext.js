@@ -4,6 +4,10 @@ import { createContext, useContext, useState, useSyncExternalStore, useCallback 
 
 const AuthContext = createContext();
 
+/**
+ * Récupère les données d'authentification depuis localStorage.
+ * @returns {{user: Object|null, token: string|null}} Les données d'auth.
+ */
 function getStoredAuth() {
   if (typeof window === 'undefined') return { user: null, token: null };
   const savedToken = localStorage.getItem('token');
@@ -14,6 +18,7 @@ function getStoredAuth() {
   return { user: null, token: null };
 }
 
+/** @param {Function} callback */
 function subscribe(callback) {
   window.addEventListener('storage', callback);
   return () => window.removeEventListener('storage', callback);
@@ -27,23 +32,32 @@ function getServerSnapshot() {
   return null;
 }
 
+/**
+ * Provider d'authentification. Gère l'état de connexion de l'utilisateur.
+ * @param {{children: React.ReactNode}} props
+ */
 export function AuthProvider({ children }) {
   const storeToken = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const [auth, setAuth] = useState(() => getStoredAuth());
 
-  // Sync si le localStorage change depuis un autre onglet
   if (storeToken && !auth.token) {
     setAuth(getStoredAuth());
   } else if (!storeToken && auth.token) {
     setAuth({ user: null, token: null });
   }
 
+  /**
+   * Connecte l'utilisateur et stocke ses données.
+   * @param {Object} userData - Les infos utilisateur.
+   * @param {string} jwtToken - Le token JWT.
+   */
   const login = useCallback((userData, jwtToken) => {
     localStorage.setItem('token', jwtToken);
     localStorage.setItem('user', JSON.stringify(userData));
     setAuth({ user: userData, token: jwtToken });
   }, []);
 
+  /** Déconnecte l'utilisateur et supprime ses données. */
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -59,6 +73,10 @@ export function AuthProvider({ children }) {
   );
 }
 
+/**
+ * Hook pour accéder au contexte d'authentification.
+ * @returns {{user: Object|null, token: string|null, isReady: boolean, login: Function, logout: Function}}
+ */
 export function useAuth() {
   return useContext(AuthContext);
 }

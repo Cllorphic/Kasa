@@ -2,18 +2,30 @@
 
 import Image from 'next/image';
 
+/**
+ * Composant d'upload d'images avec aperçu.
+ * Supporte une ou plusieurs images selon la prop multiple.
+ * @param {Object} props
+ * @param {string} props.label - Le libellé du champ.
+ * @param {string|string[]} props.previews - URL(s) d'aperçu des images.
+ * @param {Function} props.onUpload - Callback appelé lors de l'upload.
+ * @param {boolean} [props.multiple=false] - Si plusieurs images sont autorisées.
+ */
 export default function ImageUpload({ label, previews, onUpload, multiple = false }) {
+  // Normalise les previews en tableau pour un rendu uniforme
   const previewList = Array.isArray(previews) ? previews : previews ? [previews] : [];
 
   return (
     <div>
       <label className="block text-sm font-semibold text-[#333] mb-2">{label}</label>
       <div className="flex items-center gap-3 flex-wrap">
+        {/* Aperçu des images déjà uploadées */}
         {previewList.map((src, i) => (
           <div key={i} className="relative w-20 h-20 rounded-lg overflow-hidden">
             <Image src={src} alt={`${label} ${i + 1}`} fill className="object-cover" sizes="80px" />
           </div>
         ))}
+        {/* Bouton d'ajout stylisé qui cache l'input file natif */}
         <label className="w-10 h-10 bg-[#B5533E] text-white rounded-full flex items-center justify-center cursor-pointer text-xl hover:opacity-90 transition">
           +
           <input type="file" accept="image/*" onChange={onUpload} className="hidden" />

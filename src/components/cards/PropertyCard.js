@@ -5,12 +5,20 @@ import Image from 'next/image';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useAuth } from '@/context/AuthContext';
 
+/** Image par défaut si la propriété n'a pas de couverture */
 const PLACEHOLDER = '/images/HomeImage.svg';
 
+/**
+ * Carte d'un logement avec image, titre, prix et bouton favoris.
+ * Le bouton favoris n'apparaît que si l'utilisateur est connecté.
+ * @param {Object} props
+ * @param {Object} props.property - Les données de la propriété.
+ */
 export default function PropertyCard({ property }) {
   const { toggleFavorite, isFavorite } = useFavorites();
   const { user } = useAuth();
   const favorited = isFavorite(property.id);
+  // Fallback sur le placeholder si pas d'image de couverture
   const cover = property.cover || PLACEHOLDER;
 
   return (
@@ -23,15 +31,18 @@ export default function PropertyCard({ property }) {
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
+        {/* Bouton favoris visible uniquement si connecté */}
         {user && (
           <button
             className="absolute top-3 right-3 z-10"
             aria-label="Favoris"
             onClick={(e) => {
+              // Empêche la navigation vers la page de détail
               e.preventDefault();
               toggleFavorite(property.id);
             }}
           >
+            {/* Cœur rempli si favori, vide sinon */}
             <svg
               width="24"
               height="24"

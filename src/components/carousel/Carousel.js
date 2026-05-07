@@ -3,25 +3,32 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
+/** Image par défaut si aucune image valide n'est fournie */
 const PLACEHOLDER = '/images/HomeImage.svg';
 
+/**
+ * Carousel d'images navigable avec flèches et clavier.
+ * Boucle entre la dernière et la première image.
+ * N'affiche pas les flèches si une seule image.
+ * @param {Object} props
+ * @param {string[]} props.images - Liste des URLs des images.
+ * @param {string} props.title - Titre utilisé pour les attributs alt.
+ */
 export default function Carousel({ images, title }) {
+  // Filtre les images vides ou invalides
   const validImages = (images || []).filter((img) => img && typeof img === 'string' && img.length > 0);
+  // Utilise le placeholder si aucune image valide
   const displayImages = validImages.length > 0 ? validImages : [PLACEHOLDER];
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(null);
   const total = displayImages.length;
 
-  const prev = () => {
-    setDirection('left');
-    setCurrent((c) => (c === 0 ? total - 1 : c - 1));
-  };
+  /** Navigue vers l'image précédente, boucle au début si nécessaire */
+  const prev = () => setCurrent((c) => (c === 0 ? total - 1 : c - 1));
 
-  const next = () => {
-    setDirection('right');
-    setCurrent((c) => (c === total - 1 ? 0 : c + 1));
-  };
+  /** Navigue vers l'image suivante, boucle à la fin si nécessaire */
+  const next = () => setCurrent((c) => (c === total - 1 ? 0 : c + 1));
 
+  /** Gère la navigation au clavier (flèches gauche/droite) */
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowLeft') prev();
     if (e.key === 'ArrowRight') next();
@@ -36,6 +43,7 @@ export default function Carousel({ images, title }) {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
+      {/* Image courante avec animation de fade */}
       <div className="absolute inset-0 transition-opacity duration-500 ease-in-out" key={current}>
         <Image
           src={displayImages[current]}
@@ -47,6 +55,7 @@ export default function Carousel({ images, title }) {
         />
       </div>
 
+      {/* Flèches et compteur masqués si une seule image */}
       {total > 1 && (
         <>
           <button
